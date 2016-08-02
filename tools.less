@@ -1,0 +1,192 @@
+// Useful LESS Mixins by iTyu
+
+.rounded (@radius) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
+
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+}
+
+// Grandient Background
+.grandient (@color1, @color2) {
+  background-color: @color2;
+  background-image:     -ms-linear-gradient(top left, @color1 0%, @color2 100%);
+  background-image: -webkit-linear-gradient(top, @color1, @color2);
+  background-image:    -moz-linear-gradient(top, @color1, @color2);
+  background-image:      -o-linear-gradient(top, @color1, @color2);
+  background-image:        -webkit-gradient(linear, left top, left bottom, from(@color1), to(@color2));
+  background-image:         linear-gradient(top, @color1, @color2);
+}
+
+.opacity (@value: 1) {
+  @filter: @value * 100;
+
+  opacity: @value;
+  -moz-opacity: @value;
+  -khtml-opacity: @value;
+  -ms-filter: ~'"progid:DXImageTransform.Microsoft.Alpha(Opacity=@{filter})"';
+  filter: ~"alpha(opacity=@{filter})";
+}
+
+.box-shadow (@arguments) {
+  -moz-box-shadow: @arguments;
+  -ms-box-shadow: @arguments;
+  -o-box-shadow: @arguments;
+  box-shadow: @arguments;
+}
+
+.inner--box-shadow (@arguments) {
+  -webkit-box-shadow: inset @arguments;
+  -moz-box-shadow: inset @arguments;
+  box-shadow: inset @arguments;
+}
+
+.size(@width, @height) {
+  width: @width;
+  height: @height;
+}
+
+.rotation(@deg:90deg){
+  .transform(rotate(@deg));
+}
+
+.scale(@ratio:1){
+  .transform(scale(@ratio));
+}
+
+.truncate (@width) {
+  width: @width;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+}
+
+.transition(@transition) {
+  -webkit-transition: @transition;
+  -moz-transition: @transition;
+  -o-transition: @transition;
+  transition: @transition;
+}
+
+.box-sizing(@boxmodel) {
+  -webkit-box-sizing: @boxmodel;
+  -moz-box-sizing: @boxmodel;
+  box-sizing: @boxmodel;
+}
+
+.user-select(@argument: none) {
+  -webkit-user-select: @argument;
+  -moz-user-select: @argument;
+  -ms-user-select: @argument;
+  user-select: @argument;
+}
+
+.text-shadow (@arg: 0 1px 1px rgba(0, 0, 0, 0.5)) {
+  text-shadow: @arg;
+}
+
+.animation (@name, @duration: 300ms, @delay: 0, @ease: ease) {
+  -webkit-animation: @name @duration @delay @ease;
+  -moz-animation: @name @duration @delay @ease;
+  -ms-animation: @name @duration @delay @ease;
+}
+
+.skew (@deg, @deg2) {
+  -webkit-transform: skew(@deg, @deg2);
+  -moz-transform: skew(@deg, @deg2);
+  -ms-transform: skew(@deg, @deg2);
+  -o-transform: skew(@deg, @deg2);
+}
+
+.translate (@x, @y:0) {
+  -webkit-transform: translate(@x, @y);
+  -moz-transform: translate(@x, @y);
+  -ms-transform: translate(@x, @y);
+  -o-transform: translate(@x, @y);
+}
+
+.translate3d (@x, @y: 0, @z: 0) {
+  -webkit-transform: translate3d(@x, @y, @z);
+  -moz-transform: translate3d(@x, @y, @z);
+  -ms-transform: translate3d(@x, @y, @z);
+  -o-transform: translate3d(@x, @y, @z);
+}
+
+.perspective (@value: 1000) {
+  -webkit-perspective: @value;
+  -moz-perspective: @value;
+  -ms-perspective: @value;
+  perspective: @value;
+}
+
+.transform-origin (@x:center, @y:center) {
+  -webkit-transform-origin: @x @y;
+  -moz-transform-origin: @x @y;
+  -ms-transform-origin: @x @y;
+  -o-transform-origin: @x @y;
+}
+
+// linear-gradient
+//============================================================
+// @see http://dev.w3.org/csswg/css3-images/#linear-gradients
+//
+// @param dir                 :  top, left, 90deg
+// @param start-color         :  #000, rgba(255,255,255,0.5)
+// @param end-color           :  #000, rgba(255,255,255,0.5)
+//
+// NOTE: The direction for the IE gradient is automagically
+// worked out for you based either on the direction or the
+// angle that you pass in. Obviously it will only be a
+// horizontal or vertical gradient, but it's still awesome.
+//
+// ALSO: Support for rgba is covered in IE too. Values are
+// converted to aRGB.
+//
+// @example .linear-gradient(50deg,  #eee, #aaa); (IE auto included)
+//
+// @example .linear-gradient-multi(~'top, #eee 0%, #aaa 50%, #eee 100%');
+//          .linear-gradient-ie(top, #eee, #aaa);
+
+.linear-gradient( @dir: top, @start-color: #eee, @end-color: #aaa ) {
+  background: -webkit-linear-gradient(@dir, @start-color 0%, @end-color 100%);
+  background: linear-gradient(@dir, @start-color 0%, @end-color 100%);
+  .linear-gradient-ie( @dir, @start-color, @end-color);
+}
+
+.linear-gradient-multi( ... ) {
+  background-image: -webkit-linear-gradient(@arguments);
+  background-image: linear-gradient(@arguments);
+}
+
+.linear-gradient-ie( @dir, @start-color, @end-color) when (@dir = top),
+  not ( isstring(@dir) ) and ( @dir >= 225 ) and ( @dir < 315 ),
+  not ( isstring(@dir) ) and ( @dir >= -135 ) and ( @dir < -45 ) {
+  .linear-gradient-ie-filter(@start-color, @end-color, 0);
+}
+.linear-gradient-ie( @dir, @start-color, @end-color) when (@dir = right),
+  not ( isstring(@dir) ) and ( @dir >= 135 ) and ( @dir < 225 ),
+  not ( isstring(@dir) ) and ( @dir >= -225 ) and ( @dir < -135 ) {
+  .linear-gradient-ie-filter(@end-color, @start-color, 1);
+}
+.linear-gradient-ie( @dir, @start-color, @end-color) when (@dir = bottom),
+  not ( isstring(@dir) ) and ( @dir >= 45 ) and ( @dir < 135 ),
+  not ( isstring(@dir) ) and ( @dir >= -315 ) and ( @dir < -225 ) {
+  .linear-gradient-ie-filter(@end-color, @start-color, 0);
+}
+.linear-gradient-ie( @dir, @start-color, @end-color) when (@dir = left),
+  not ( isstring(@dir) ) and ( @dir >= 315 ) and ( @dir < 360 ),
+  not ( isstring(@dir) ) and ( @dir >= -45 ) and ( @dir < 45 ),
+  not ( isstring(@dir) ) and ( @dir < -315 ) and ( @dir >= -360 ) {
+  .linear-gradient-ie-filter(@start-color, @end-color, 1);
+}
+
+.linear-gradient-ie-filter( @start: #eee, @end: #aaa, @type: 1 ) {
+  @c-start: argb( @start );
+  @c-end:   argb( @end );
+  filter: ~"progid:DXImageTransform.Microsoft.gradient(startColorstr='@{c-start}', endColorstr='@{c-end}', GradientType=@{type})";
+  -ms-filter: ~"progid:DXImageTransform.Microsoft.gradient(startColorstr='@{c-start}',endColorstr='@{c-end}',GradientType=@{type})";
+}
